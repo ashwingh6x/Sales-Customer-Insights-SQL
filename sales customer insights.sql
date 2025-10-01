@@ -85,12 +85,12 @@ INSERT INTO Order_Details VALUES (15, 1010, 105, 1, 25000);
 select Order_Details.order_id, Order_Details.order_detail_id, Products.product_id, Products.product_name, Products.category, Products.price
 from Order_Details
 inner join Products
-on Products.product_id = Order_Details.product_id
+on Products.product_id = Order_Details.product_id;
 
 -- Showing total sales per product by aggregation functions
 
-SELECT 
-    p.product_id,
+select
+	p.product_id,
     p.product_name,
     p.category,
     SUM(od.quantity * od.price) AS total_sales,
@@ -123,12 +123,22 @@ SELECT
 FROM Products
 ORDER BY category, price_rank_in_category;
 
+-- Exporting table data from the database to excel(.csv)
+
+SELECT 
+    od.order_id, 
+    od.order_detail_id, 
+    p.product_id, 
+    p.product_name, 
+    p.category, 
+    p.price
+FROM Order_Details od
+JOIN Products p ON p.product_id = od.product_id
+INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/products.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
 -- end of file
-
-
-
-
-
-
 
 
